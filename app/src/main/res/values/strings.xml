@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Messenger</string>
+    <string name="tv_main_title">Send\'ME</string>
+    <string name="hint_et_email">Ваш адрес:</string>
+    <string name="tv_hint_pwd">Ваш пароль:</string>
+    <string name="btn_sign">Войти</string>
+    <string name="descr_logo">Логотип Меседжера</string>
+    <string name="tv_forgot_pwd">Восстановить пароль</string>
+    <string name="tv_registration">Зарегистрироваться</string>
+    <string name="toast_login">Заполните все данные</string>
+    <string name="iv_user_avatar">Аватар пользователя</string>
+    <string name="iv_status_online">Онлайн статус пользователя</string>
+    <string name="toast_incorrect_email_and_pwd">Неверные Email и пароль</string>
+    <string name="menu_item_logout">Выход</string>
+    <string name="tv_reset_pwd">Сброс пароля</string>
+    <string name="tv_reset_pwd_info">Письмо с инструкцией по восстанывлению пароля отправленно на указанный эл. адрес</string>
+    <string name="descr_logo_reset_pwd">Логотип сброса пароля</string>
+    <string name="hint_tv_email_reset_pwd">Введите эл. адрес</string>
+    <string name="btn_send_email_reset">Отправить письмо</string>
+    <string name="tv_title_registration">Регистрация</string>
+    <string name="btn_registration">Зарегистрироваться</string>
+    <string name="et_name_registration">Введите ваше имя:</string>
+    <string name="et_lastname_registration">Введите вашу фамилию:</string>
+    <string name="et_password_registration">Пароль:</string>
+    <string name="cb_license">Принять лиицензионное соглашение.</string>
+</resources>

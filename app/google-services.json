@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "455498567828",
+    "project_id": "kolcmanmessenger",
+    "storage_bucket": "kolcmanmessenger.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455498567828:android:e1ca1be30a1660070f2481",
+        "android_client_info": {
+          "package_name": "com.example.messenger"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIYnZKH39zmMNGobTsRtL2nMS-_ocAsrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
