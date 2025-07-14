@@ -1,4 +1,4 @@
-package com.example.messenger.main;
+package com.example.messenger.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,12 +15,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.messenger.R;
-import com.example.messenger.User;
 import com.example.messenger.forgotPassword.ForgotPasswordActivity;
+import com.example.messenger.registration.RegistrationActivity;
 import com.example.messenger.сhatList.ChatListActivity;
-import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail;
     private EditText etPassword;
@@ -29,16 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvForgotPwd;
     private TextView tvRegistration;
 
-    private MainViewModel viewModel;
-
-    private boolean isFirstTime = true;
-
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -46,24 +40,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initViews();
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        observeViewModels();
         setUpClickListeners();
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        viewModel.getIsLogin().observe(this, isLogin -> {
-            if (isFirstTime) {
-                isFirstTime = false;
-                return;
-            }
 
-            if (isLogin) {
-                launchChatScreen();
-            } else {
-                Toast.makeText(
-                        this,
-                        R.string.toast_incorrect_email_and_pwd,
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        });
 
     }
 
@@ -82,6 +62,27 @@ public class MainActivity extends AppCompatActivity {
         tvForgotPwd.setOnClickListener(view -> {
             launchForgotPwdScreen();
         });
+        tvRegistration.setOnClickListener(view -> {
+            launchRegistrationScreen();
+        });
+    }
+
+    private void observeViewModels() {
+        viewModel.getIsError().observe(this, error -> {
+            if (error != null) {
+                Toast.makeText(
+                        this,
+                        error,
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+        viewModel.getUser().observe(this, firebaseUser -> {
+            if (firebaseUser != null) {
+                launchChatScreen();
+                finish();
+            }
+        });
     }
 
     private void login() {
@@ -90,18 +91,24 @@ public class MainActivity extends AppCompatActivity {
         if (!userLogin.isEmpty() && !userPassword.isEmpty()) {
             viewModel.loginUser(userLogin, userPassword);
         } else {
-            Toast.makeText(this, R.string.toast_login, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_empty_fields, Toast.LENGTH_SHORT).show();
         }
     }
+
     private void launchChatScreen() {
         startActivity(ChatListActivity.newIntent(this));
     }
 
     private void launchForgotPwdScreen() {
-        startActivity(ForgotPasswordActivity.newIntent(this));
+        String email = etEmail.getText().toString().trim();
+        startActivity(ForgotPasswordActivity.newIntent(this, email));
     }
 
-    public static Intent newIntent(Context context){
-        return new Intent(context, MainActivity.class);
+    private void launchRegistrationScreen() {
+        startActivity(RegistrationActivity.newIntent(this));
+    }
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
     }
 }

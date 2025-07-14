@@ -1,7 +1,6 @@
-package com.example.messenger.registration;
+package com.example.messenger.login;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,23 +10,13 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class RegistrationViewModel extends AndroidViewModel {
+public class LoginViewModel extends AndroidViewModel {
 
-    private final FirebaseAuth auth;
-
+    private FirebaseAuth auth;
     private MutableLiveData<String> isError = new MutableLiveData<>();
     private MutableLiveData<FirebaseUser> user = new MutableLiveData<>();
 
-
-    public LiveData<String> getIsError() {
-        return isError;
-    }
-
-    public LiveData<FirebaseUser> getUser() {
-        return user;
-    }
-
-    public RegistrationViewModel(@NonNull Application application) {
+    public LoginViewModel(@NonNull Application application) {
         super(application);
         auth = FirebaseAuth.getInstance();
         auth.addAuthStateListener(firebaseAuth -> {
@@ -37,12 +26,17 @@ public class RegistrationViewModel extends AndroidViewModel {
         });
     }
 
-    public void singUp(String email,
-                       String password,
-                       String name,
-                       String lastName
-    ) {
-        auth.createUserWithEmailAndPassword(email, password)
+    public LiveData<FirebaseUser> getUser() {
+        return user;
+    }
+
+    public LiveData<String> getIsError() {
+        return isError;
+    }
+
+    public void loginUser(String email, String pwd) {
+        auth.signInWithEmailAndPassword(email, pwd)
+                .addOnSuccessListener(authResult -> {})
                 .addOnFailureListener(error -> {
                     isError.setValue(error.getMessage());
                 });

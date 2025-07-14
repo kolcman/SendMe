@@ -15,9 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.messenger.R;
-import com.example.messenger.User;
-import com.example.messenger.main.MainActivity;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.messenger.login.LoginActivity;
 
 public class ChatListActivity extends AppCompatActivity {
 
@@ -35,9 +33,18 @@ public class ChatListActivity extends AppCompatActivity {
             return insets;
         });
         viewModel = new ViewModelProvider(this).get(ChatListViewModel.class);
+        observeViewModels();
 
     }
 
+    private void observeViewModels() {
+        viewModel.getUser().observe(this, firebaseUser -> {
+            if (firebaseUser == null) {
+                startActivity(LoginActivity.newIntent(ChatListActivity.this));
+                finish();
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,7 +56,6 @@ public class ChatListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.item_logout) {
             viewModel.logout();
-            startActivity(MainActivity.newIntent(this));
         }
         return super.onOptionsItemSelected(item);
     }

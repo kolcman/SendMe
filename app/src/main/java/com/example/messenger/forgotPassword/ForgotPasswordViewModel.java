@@ -12,23 +12,28 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Boolean> isSent = new MutableLiveData<>(false);
+    private MutableLiveData<Boolean> success = new MutableLiveData<>(false);
+    private MutableLiveData<String> error = new MutableLiveData<>();
     private FirebaseAuth auth;
     public ForgotPasswordViewModel(@NonNull Application application) {
         super(application);
         auth = FirebaseAuth.getInstance();
     }
 
-    public LiveData<Boolean> getIsSent() {
-        return isSent;
+    public MutableLiveData<String> getError() {
+        return error;
+    }
+
+    public MutableLiveData<Boolean> isSuccess() {
+        return success;
     }
 
     public void sendToEmail(String email) {
-        auth.sendPasswordResetEmail(email).addOnSuccessListener(success ->{
-            isSent.setValue(true);
-        }).addOnFailureListener( error -> {
-           isSent.setValue(false);
-            Log.d("SendEmail", error.getMessage());
+        auth.sendPasswordResetEmail(email).addOnSuccessListener(unused ->{
+            success.setValue(true);
+        }).addOnFailureListener( exception -> {
+           success.setValue(false);
+           error.setValue(exception.getMessage());
         });
     }
 }

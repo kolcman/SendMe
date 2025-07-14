@@ -81,11 +81,11 @@
         android:autofillHints=""
         android:hint="@string/et_lastname_registration"
         android:inputType="textCapWords"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox"
+        app:layout_constraintBottom_toTopOf="@+id/cbAcceptRules"
         app:layout_constraintTop_toBottomOf="@+id/etNameRegistration" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/cbAcceptRules"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cb_license"
@@ -103,7 +103,7 @@
         android:text="@string/btn_registration"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:layout_constraintTop_toBottomOf="@+id/cbAcceptRules"
          />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

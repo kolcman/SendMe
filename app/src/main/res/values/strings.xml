@@ -7,7 +7,7 @@
     <string name="descr_logo">Логотип Меседжера</string>
     <string name="tv_forgot_pwd">Восстановить пароль</string>
     <string name="tv_registration">Зарегистрироваться</string>
-    <string name="toast_login">Заполните все данные</string>
+    <string name="toast_empty_fields">Заполните все поля</string>
     <string name="iv_user_avatar">Аватар пользователя</string>
     <string name="iv_status_online">Онлайн статус пользователя</string>
     <string name="toast_incorrect_email_and_pwd">Неверные Email и пароль</string>

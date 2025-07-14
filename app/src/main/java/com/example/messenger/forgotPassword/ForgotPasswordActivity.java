@@ -1,5 +1,7 @@
 package com.example.messenger.forgotPassword;
 
+import static android.content.Intent.EXTRA_EMAIL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.messenger.R;
-import com.example.messenger.main.MainActivity;
+import com.example.messenger.login.LoginActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -28,11 +29,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private Button btnResetPwd;
     private EditText etEmailResetPwd;
     private TextView tvResetPwdInfo;
+    public static final String EMAIL_EXTRA = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -41,13 +42,19 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
         initViews();
         setUpClickListeners();
+        String email = getIntent().getStringExtra(EXTRA_EMAIL);
+        etEmailResetPwd.setText(email);
         viewModel = new ViewModelProvider(this).get(ForgotPasswordViewModel.class);
-        viewModel.getIsSent().observe(this, sent -> {
-           if (sent){
-               tvResetPwdInfo.setVisibility(View.VISIBLE);
-           } else {
-               tvResetPwdInfo.setVisibility(View.GONE);
-           }
+        observeViewModels();
+    }
+
+    private void observeViewModels(){
+        viewModel.isSuccess().observe(this, success -> {
+            if (success) {
+                tvResetPwdInfo.setVisibility(View.VISIBLE);
+            } else {
+                tvResetPwdInfo.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -57,20 +64,22 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
     }
 
-    private void initViews(){
+    private void initViews() {
         btnResetPwd = findViewById(R.id.btnRegistration);
         etEmailResetPwd = findViewById(R.id.etEmailResetPwd);
         tvResetPwdInfo = findViewById(R.id.tvResetPwdInfo);
     }
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, ForgotPasswordActivity.class);
+    public static Intent newIntent(Context context, String email) {
+        Intent intent = new Intent(context, ForgotPasswordActivity.class);
+        intent.putExtra(EXTRA_EMAIL, email);
+        return intent;
     }
 
-    private void sendEmail(){
-        String email = etEmailResetPwd.getText().toString();
-        if (email.isEmpty()){
-            Toast.makeText(this, R.string.toast_login, Toast.LENGTH_SHORT).show();
+    private void sendEmail() {
+        String email = etEmailResetPwd.getText().toString().trim();
+        if (email.isEmpty()) {
+            Toast.makeText(this, R.string.toast_empty_fields, Toast.LENGTH_SHORT).show();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Введите корректный email", Toast.LENGTH_SHORT).show();
         } else {
@@ -81,7 +90,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void launchMainScreen() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(MainActivity.newIntent(this));
+            startActivity(LoginActivity.newIntent(this));
             finish();
         }, 5000);
 
