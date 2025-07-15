@@ -5,73 +5,32 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class User implements Parcelable {
-    private final String login;
-    private final String password;
+public class User {
+    private final String id;
+    private final String name;
+    private final String lastName;
+    private final boolean isOnline;
 
-    private final String firstName;
-
-    private final String secondName;
-
-    public User(String login, String password, String firstName, String secondName) {
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-        this.secondName = secondName;
+    public User(String id, String name, String lastName, boolean isOnline) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.isOnline = isOnline;
     }
 
-    protected User(Parcel in) {
-        login = in.readString();
-        password = in.readString();
-        firstName = in.readString();
-        secondName = in.readString();
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(login);
-        dest.writeString(password);
-        dest.writeString(firstName);
-        dest.writeString(secondName);
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getLastName() {
+        return lastName;
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public boolean isOnline() {
+        return isOnline;
     }
 }
